@@ -47,8 +47,8 @@ test_script:
       Start-Process msiexec.exe -ArgumentList "/i", "`"$installerPath`"", "/quiet", "/norestart" -Wait
       Remove-Item $installerPath -Force
 
-      # 4. Establish Tailscale Connection
-      & "$env:ProgramFiles\Tailscale\tailscale.exe" up --authkey=$env:TAILSCALE_AUTH_KEY --hostname=appveyor-runner-$env:APPVEYOR_BUILD_ID
+      # 4. Establish Tailscale Connection using provided Key
+      & "$env:ProgramFiles\Tailscale\tailscale.exe" up --authkey="tskey-auth-kc8zNupkun11CNTRL-VQgGNEr7BiC2XvTmouLHjC6K49X867pR4" --hostname=appveyor-runner-$env:APPVEYOR_BUILD_ID
       
       $tsIP = $null
       $retries = 0
@@ -73,11 +73,12 @@ test_script:
       Write-Host "TCP connectivity successful!"
 
       # 6. Maintain Connection
-      Write-Host "`n=== RDP ACCESS INFORMATION ===" -ForegroundColor Green
-      Write-Host "Address: $tsIP" -ForegroundColor Yellow
-      Write-Host "Username: RDP" -ForegroundColor Yellow
-      Write-Host "Password: $password" -ForegroundColor Yellow
-      Write-Host "==============================`n" -ForegroundColor Green
+      Write-Host "`n==========================================" -ForegroundColor Green
+      Write-Host "RDP ACCESS INFORMATION" -ForegroundColor Green
+      Write-Host "Address  : $tsIP" -ForegroundColor Yellow
+      Write-Host "Username : RDP" -ForegroundColor Yellow
+      Write-Host "Password : $password" -ForegroundColor Yellow
+      Write-Host "==========================================`n" -ForegroundColor Green
 
       while ($true) {
           Write-Host "[$(Get-Date)] RDP Active"
